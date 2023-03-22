@@ -1,0 +1,49 @@
+import random
+
+def qsort(array, left, right):
+    p = random.choice(array[left:right + 1])
+    i, j = left, right
+    while i <= j:
+        while array[i] < p:
+            i += 1
+        while array[j] > p:
+            j -= 1
+        if i <= j:
+            array[i], array[j] = array[j], array[i]
+            i += 1
+            j -= 1
+    if j > left:
+        qsort(array, left, j)
+    if right > i:
+        qsort(array, i, right)
+    return array
+
+def binary_search(array, element, left, right):
+    middle = (left + right) // 2
+    if array[middle] == element:
+        return middle
+    elif array[middle] > element:
+        return binary_search(array, element, left, middle - 1)
+    else:
+        return binary_search(array, element, middle + 1, right)
+
+nums = input("Введите целые неотрицательные числа через пробел ")
+num = input("Введите целое неотрицательное число ")
+
+if not ''.join(nums.split()).isdigit() or not num.isdigit():
+    raise ValueError('Можно вводить только целые неотрицательные числа!')
+
+nums = list(map(int, nums.split()))
+num = int(num)
+print(qsort(nums, 0, len(nums) - 1))
+if nums[0] < num <= nums[-1]:
+    for i in nums:
+        if i < num:
+            elem = i
+            continue
+        else:
+            break
+    print(elem)
+    print(binary_search(nums, elem, 0, len(nums) - 2))
+else:
+    print(f'Число {num} не входит в диапазон от {nums[0]} не включительно до {nums[-1]} включительно.')
